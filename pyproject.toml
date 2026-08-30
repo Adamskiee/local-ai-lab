@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-ai-lab"
+version = "0.1.0"
+description = "Offline AI-assisted code explainer"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+]
+
+[project.optional-dependencies]
+api = ["fastapi", "uvicorn", "pydantic"]
+cli = ["typer"]
+rag = ["sentence-transformers", "chromadb"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["core*", "interfaces*"]
