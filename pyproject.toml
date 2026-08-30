@@ -20,3 +20,9 @@ dev = ["pytest"]
 
 [tool.setuptools.packages.find]
 include = ["core*", "interfaces*"]
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated:DeprecationWarning",
+]
