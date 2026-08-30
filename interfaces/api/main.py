@@ -58,7 +58,13 @@ async def chat(request: ChatRequest):
             )
             response.raise_for_status()
             data = response.json()
-            return {"response": data["response"]}
+            return {
+                "response": data["response"],
+                "sources": [
+                    {"file_path": chunk["file_path"], "start_line": chunk["start_line"]}
+                    for chunk in chunks
+                ]
+            }
     except (httpx.ConnectError, httpx.TimeoutException):
         raise HTTPException(status_code=503, detail="Ollama service is down or timed out")
     except httpx.HTTPStatusError:

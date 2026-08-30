@@ -82,4 +82,7 @@ def test_chat_success(mock_client_class, mock_retrieve, mock_has_chunks):
     
     response = client.post("/chat", json={"message": "hello", "project_root": "/fake/path"})
     assert response.status_code == 200
-    assert response.json() == {"response": "Ollama response"}
+    assert response.json() == {
+        "response": "Ollama response",
+        "sources": [{"file_path": "bar.py", "start_line": 1}]
+    }
