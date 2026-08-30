@@ -20,3 +20,6 @@ Thumbs.db
 
 # Superpowers design docs
 docs/superpowers/
+
+# ChromaDB vector store
+chroma_db/
