@@ -3,7 +3,7 @@ import pytest
 
 
 def test_config_constants():
-    from models.config import (
+    from core.config import (
         OLLAMA_URL,
         OLLAMA_MODEL,
         EMBED_MODEL,
