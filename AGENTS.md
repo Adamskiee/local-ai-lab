@@ -10,3 +10,9 @@ When working in this repository, please adhere to the following rules:
 * **Template:** Always copy and use the `docs/adr/template.md` file.
 * **Naming:** Number the files sequentially (e.g., `0002-short-description.md`).
 * Be sure to fill out the `Status`, `Context`, `Decision`, and `Consequences` sections thoroughly.
+
+## Git Commit Conventions
+
+* **Conventional Commits:** You MUST follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for all commit messages.
+* Use appropriate prefixes such as `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, etc.
+* Keep the subject line concise (under 50 characters) and use the imperative mood (e.g., "add feature" not "added feature").
