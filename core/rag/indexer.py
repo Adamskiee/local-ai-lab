@@ -1,5 +1,6 @@
 from pathlib import Path
 import logging
+import os
 
 from core.config import (
     EMBED_MODEL,
@@ -43,21 +44,22 @@ def index_directory(path: str) -> dict:
     root = Path(path).resolve()
     
     files_to_index = []
-    for p in root.rglob("*"):
-        if p.is_file() and should_index_file(p):
-            files_to_index.append(p)
-            
-    if len(files_to_index) > MAX_FILES:
-        raise ValueError(f"Too many files: {len(files_to_index)} > {MAX_FILES}")
-        
+    count = 0
+    
+    for dirpath, _, filenames in os.walk(root):
+        for filename in filenames:
+            p = Path(dirpath) / filename
+            if should_index_file(p):
+                count += 1
+                if count > MAX_FILES:
+                    raise ValueError(f"Too many files: {count} > {MAX_FILES}")
+                files_to_index.append(p)
+                
     import chromadb
     client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     collection = client.get_or_create_collection(name="code_index")
     
-    try:
-        collection.delete(where={"project_root": str(root)})
-    except Exception:
-        pass
+    collection.delete(where={"project_root": str(root)})
         
     model = get_model()
     total_chunks = 0

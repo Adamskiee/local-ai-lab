@@ -7,20 +7,19 @@ from core.config import MAX_FILES, MAX_FILE_SIZE_KB, CHROMA_PATH, SUPPORTED_EXTE
 from core.rag.indexer import index_directory, _chunk_lines
 
 @pytest.fixture(autouse=True)
-def clean_chroma():
+def clean_chroma(tmp_path_factory, monkeypatch):
     """
     Autouse fixture to clean up ChromaDB before each test.
     Note: this breaks pytest-xdist because it shares the same persistent DB.
     """
+    test_chroma_path = tmp_path_factory.mktemp("chroma_db")
+    monkeypatch.setattr("core.rag.indexer.CHROMA_PATH", test_chroma_path)
+    monkeypatch.setattr("tests.core.test_indexer.CHROMA_PATH", test_chroma_path)
+    
     import chromadb
     chromadb.api.client.SharedSystemClient.clear_system_cache()
-    if CHROMA_PATH.exists():
-        shutil.rmtree(CHROMA_PATH, ignore_errors=True)
-    yield
-    import chromadb
+    yield test_chroma_path
     chromadb.api.client.SharedSystemClient.clear_system_cache()
-    if CHROMA_PATH.exists():
-        shutil.rmtree(CHROMA_PATH, ignore_errors=True)
 
 @pytest.fixture(autouse=True)
 def mock_get_model(monkeypatch):
@@ -58,19 +57,21 @@ def test_index_directory_counts_files_and_chunks(tmp_path):
     assert result["files_indexed"] == 2
     assert result["chunks_indexed"] == 4
 
-def test_index_directory_max_files(tmp_path):
-    for i in range(MAX_FILES + 1):
+def test_index_directory_max_files(tmp_path, monkeypatch):
+    monkeypatch.setattr("core.rag.indexer.MAX_FILES", 5)
+    for i in range(6):
         (tmp_path / f"test{i}.py").write_text("test")
         
     with pytest.raises(ValueError, match="Too many files"):
         index_directory(str(tmp_path))
 
-def test_index_directory_skips_large_files(tmp_path):
+def test_index_directory_skips_large_files(tmp_path, monkeypatch):
+    monkeypatch.setattr("core.rag.indexer.MAX_FILE_SIZE_KB", 1)
     f1 = tmp_path / "normal.py"
     f1.write_text("normal")
     
     f2 = tmp_path / "large.py"
-    f2.write_text("a" * (MAX_FILE_SIZE_KB * 1024 + 10))
+    f2.write_text("a" * (1 * 1024 + 10))
     
     result = index_directory(str(tmp_path))
     assert result["files_indexed"] == 1
@@ -83,7 +84,8 @@ def test_index_directory_stores_absolute_project_root_and_clears_old(tmp_path):
     index_directory(str(tmp_path))
     
     import chromadb
-    client = chromadb.PersistentClient(path=str(CHROMA_PATH))
+    import core.rag.indexer
+    client = chromadb.PersistentClient(path=str(core.rag.indexer.CHROMA_PATH))
     collection = client.get_collection("code_index")
     results = collection.get()
     
@@ -101,3 +103,4 @@ def test_index_directory_stores_absolute_project_root_and_clears_old(tmp_path):
     
     results = collection.get()
     assert len(results["ids"]) == 2
+
