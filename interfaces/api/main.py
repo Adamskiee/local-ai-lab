@@ -47,7 +47,7 @@ async def chat(request: ChatRequest):
     prompt = f"Context:\n{context}\n\nQuestion: {request.message}"
 
     try:
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        async with httpx.AsyncClient(timeout=None) as client:
             response = await client.post(
                 f"{OLLAMA_URL}/api/generate",
                 json={
