@@ -40,7 +40,12 @@ The Web UI provides a clean, split-pane interface for reading AI explanations al
 
 The CLI acts as a thin wrapper over the API, bringing the same RAG capabilities directly to your terminal. 
 
-*(Assuming you have installed the project with `make install` or `pip install -e .[cli]`)*
+*(Assuming you have installed the project with `make install`)*
+
+Before running the CLI, you must activate the virtual environment created during installation:
+```bash
+source .venv/bin/activate
+```
 
 ### 1. Indexing a Project
 
