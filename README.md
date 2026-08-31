@@ -18,6 +18,7 @@ Offline AI-assisted code explainer running on a local Ollama instance.
    Alternatively, you can run components individually using `make api` or `make ui`.
 
 ## Documentation
+- [Usage Guide](docs/usage.md)
 - [System Architecture](docs/architecture.md)
 - [Interfaces & API](docs/interfaces.md)
 - [Prompt Strategy](docs/prompts.md)
