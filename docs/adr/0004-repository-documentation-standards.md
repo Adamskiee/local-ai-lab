@@ -29,8 +29,8 @@ We will establish a comprehensive documentation standard for the repository, con
    * **System Personas**: Establishing default system prompts to enforce concise, accurate AI behavior.
 
 4. **Setup Automation & README**:
-   * **Automation**: We will introduce a `Makefile` (or simple bash script) to orchestrate starting the FastAPI server, React UI, and local Ollama instance with a single command.
-   * **README**: Update the `README.md` to reference the automation script rather than listing verbose manual start commands.
+   * **Automation**: We will introduce a `Makefile` (or simple bash script) to orchestrate starting the FastAPI server and React UI with a single command. (Note: Ollama is intentionally excluded to avoid lifecycle conflicts with existing system daemons).
+   * **README**: Update the `README.md` to reference the automation script rather than listing verbose manual start commands for the API and UI, and explicitly list Ollama as a manual prerequisite.
 
 ## Consequences
 
