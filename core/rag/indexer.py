@@ -30,7 +30,7 @@ def _chunk_lines(lines: list[str]) -> list[tuple[int, str]]:
         chunk = "\n".join(lines[i:end])
         if chunk.strip():
             chunks.append((i + 1, chunk))
-        i += CHUNK_SIZE - CHUNK_OVERLAP
+        i += max(1, CHUNK_SIZE - CHUNK_OVERLAP)
     return chunks
 
 def should_index_file(path: Path) -> bool:
@@ -91,7 +91,7 @@ def index_directory(path: str) -> dict:
             total_chunks += 1
             
     if documents:
-        BATCH_SIZE = 5000
+        BATCH_SIZE = 256
         for i in range(0, len(documents), BATCH_SIZE):
             batch_docs = documents[i:i+BATCH_SIZE]
             batch_ids = ids[i:i+BATCH_SIZE]

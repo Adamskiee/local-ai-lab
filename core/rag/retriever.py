@@ -1,6 +1,5 @@
 from pathlib import Path
 import chromadb
-from chromadb.errors import InvalidDimensionException
 
 try:
     from chromadb.errors import NotFoundError

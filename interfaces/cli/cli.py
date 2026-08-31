@@ -20,6 +20,14 @@ def index(path):
         response.raise_for_status()
         click.echo("Success:")
         click.echo(json.dumps(response.json(), indent=2))
+    except requests.exceptions.HTTPError as e:
+        error_detail = e.response.text
+        try:
+            error_detail = e.response.json().get("detail", error_detail)
+        except Exception:
+            pass
+        click.echo(f"API Error ({e.response.status_code}): {error_detail}", err=True)
+        sys.exit(1)
     except requests.exceptions.RequestException as e:
         click.echo(f"Error connecting to API: {e}", err=True)
         sys.exit(1)
@@ -41,6 +49,14 @@ def chat(project_root, message):
             click.echo("\nSources:")
             for source in sources:
                 click.echo(f"  - {source.get('file_path')}:{source.get('start_line')}")
+    except requests.exceptions.HTTPError as e:
+        error_detail = e.response.text
+        try:
+            error_detail = e.response.json().get("detail", error_detail)
+        except Exception:
+            pass
+        click.echo(f"API Error ({e.response.status_code}): {error_detail}", err=True)
+        sys.exit(1)
     except requests.exceptions.RequestException as e:
         click.echo(f"Error connecting to API: {e}", err=True)
         sys.exit(1)

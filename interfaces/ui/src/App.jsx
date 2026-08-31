@@ -31,7 +31,7 @@ function App() {
       }
       
       const data = await res.json();
-      setIndexStatus(`Successfully indexed ${data.files_indexed || 0} files (${data.chunks_created || 0} chunks).`);
+      setIndexStatus(`Successfully indexed ${data.files_indexed || 0} files (${data.chunks_indexed || 0} chunks).`);
     } catch (err) {
       setIndexStatus(`Failed to index: ${err.message}`);
     } finally {

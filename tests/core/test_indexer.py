@@ -95,12 +95,15 @@ def test_index_directory_stores_absolute_project_root_and_clears_old(tmp_path):
     assert metadata["project_root"] == str(tmp_path.resolve())
     assert metadata["file_path"] == "test1.py"
     
-    f1.write_text("content1\ncontent2")
+    old_id = results["ids"][0]
+    
+    f1.unlink()
     f2 = tmp_path / "test2.py"
     f2.write_text("test2")
     
     index_directory(str(tmp_path))
     
     results = collection.get()
-    assert len(results["ids"]) == 2
+    assert len(results["ids"]) == 1
+    assert old_id not in results["ids"]
 

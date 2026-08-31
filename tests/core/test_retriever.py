@@ -7,10 +7,13 @@ from core.rag.retriever import retrieve, project_has_chunks
 @patch("core.rag.retriever._get_chroma_client")
 @patch("core.rag.retriever.get_model")
 def test_retrieve_returns_matching_chunks(mock_get_model, mock_get_client, tmp_path):
-    import numpy as np
+    class MockEmbedding:
+        def tolist(self):
+            return [[0.1, 0.2]]
+            
     # Setup mock model
     mock_model = MagicMock()
-    mock_model.encode.return_value = np.array([[0.1, 0.2]])
+    mock_model.encode.return_value = MockEmbedding()
     mock_get_model.return_value = mock_model
     
     # Setup mock ChromaDB client
@@ -89,9 +92,12 @@ def test_project_has_chunks_missing_collection(mock_get_client, tmp_path):
 def test_retrieve_handles_absolute_relative_equivalence(mock_get_model, mock_get_client, tmp_path):
     import os
     
-    import numpy as np
+    class MockEmbedding:
+        def tolist(self):
+            return [[0.1, 0.2]]
+            
     mock_model = MagicMock()
-    mock_model.encode.return_value = np.array([[0.1, 0.2]])
+    mock_model.encode.return_value = MockEmbedding()
     mock_get_model.return_value = mock_model
     
     mock_client = MagicMock()
@@ -111,7 +117,7 @@ def test_retrieve_handles_absolute_relative_equivalence(mock_get_model, mock_get
     os.chdir(str(tmp_path))
     try:
         # relative path "."
-        retrieve("query", ".")
+        retrieve("query", ".", top_k=5)
         
         # Should be resolved to absolute path
         mock_collection.query.assert_called_once_with(
