@@ -14,7 +14,7 @@ dependencies = [
 
 [project.optional-dependencies]
 api = ["fastapi", "uvicorn", "pydantic", "jinja2"]
-cli = ["typer"]
+cli = ["click", "requests"]
 rag = ["sentence-transformers", "chromadb"]
 dev = ["pytest"]
 
@@ -26,3 +26,6 @@ asyncio_default_fixture_loop_scope = "function"
 filterwarnings = [
     "ignore:Using `httpx` with `starlette.testclient` is deprecated:DeprecationWarning",
 ]
+
+[project.scripts]
+local-ai-lab = "interfaces.cli.cli:cli"
