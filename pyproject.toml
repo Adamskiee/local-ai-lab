@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-api = ["fastapi", "uvicorn", "pydantic"]
+api = ["fastapi", "uvicorn", "pydantic", "jinja2"]
 cli = ["typer"]
 rag = ["sentence-transformers", "chromadb"]
 dev = ["pytest"]
