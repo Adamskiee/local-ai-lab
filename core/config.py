@@ -1,6 +1,6 @@
 from pathlib import Path
 
-OLLAMA_URL = "http://localhost:11434"
+OLLAMA_URL = "http://127.0.0.1:11434"
 OLLAMA_MODEL = "qwen2.5:3b"
 EMBED_MODEL = "all-MiniLM-L6-v2"
 CHROMA_PATH = Path(__file__).parent.parent / "chroma_db"
