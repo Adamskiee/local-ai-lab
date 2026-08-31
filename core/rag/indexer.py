@@ -46,7 +46,10 @@ def index_directory(path: str) -> dict:
     files_to_index = []
     count = 0
     
-    for dirpath, _, filenames in os.walk(root):
+    for dirpath, dirnames, filenames in os.walk(root):
+        # Prevent traversal into common dependency and build directories
+        dirnames[:] = [d for d in dirnames if d not in {".git", ".venv", "venv", "node_modules", "__pycache__", "dist", "build", ".pytest_cache"}]
+        
         for filename in filenames:
             p = Path(dirpath) / filename
             if should_index_file(p):
