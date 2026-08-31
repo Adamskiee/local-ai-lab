@@ -16,3 +16,9 @@ When working in this repository, please adhere to the following rules:
 * **Conventional Commits:** You MUST follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for all commit messages.
 * Use appropriate prefixes such as `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, etc.
 * Keep the subject line concise (under 50 characters) and use the imperative mood (e.g., "add feature" not "added feature").
+
+## Git Worktrees
+
+* **Isolation:** When undertaking a task that involves code changes, you MUST create a new git worktree for your changes (unless explicitly instructed otherwise).
+* **Setup:** After creating a worktree, run `make setup` within the worktree to bootstrap the environment (creates `.env`, virtual environment with `uv`, and installs dependencies).
+* **Cleanup:** When your task is fully completed or the changes are merged, you MUST clean up and delete the worktree.

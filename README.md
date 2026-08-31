@@ -9,9 +9,9 @@ Offline AI-assisted code explainer running on a local Ollama instance.
 
 ## Setup & Running
 
-1. Copy `.env.example` to `.env` and adjust if needed.
-2. Install dependencies:
-   `make install`
+1. Install `uv` if you haven't already.
+2. Initialize the project (creates `.env`, virtual environment, and installs dependencies):
+   `make setup`
 3. Start the application stack (API and UI):
    `make all`
 

@@ -13,12 +13,16 @@ help:
 	@echo "  make install - Install Python and Node dependencies (uses venv)"
 
 $(VENV)/bin/activate:
-	python3 -m venv $(VENV)
+	uv venv $(VENV)
 
 venv: $(VENV)/bin/activate
 
+setup:
+	@if [ ! -f .env ]; then cp .env.example .env; fi
+	$(MAKE) install
+
 install: venv
-	$(PIP) install -e .[api,cli,rag,dev]
+	uv pip install -e .[api,cli,rag,dev]
 	cd interfaces/ui && pnpm install
 
 api: venv
