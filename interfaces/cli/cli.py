@@ -28,6 +28,10 @@ def index(path):
             pass
         click.echo(f"API Error ({e.response.status_code}): {error_detail}", err=True)
         sys.exit(1)
+    except requests.exceptions.ConnectionError as e:
+        click.echo(f"Error connecting to API. Is the FastAPI server running on {API_URL}?", err=True)
+        click.echo(f"Details: {e}", err=True)
+        sys.exit(1)
     except requests.exceptions.RequestException as e:
         click.echo(f"Error connecting to API: {e}", err=True)
         sys.exit(1)
@@ -56,6 +60,10 @@ def chat(project_root, message):
         except Exception:
             pass
         click.echo(f"API Error ({e.response.status_code}): {error_detail}", err=True)
+        sys.exit(1)
+    except requests.exceptions.ConnectionError as e:
+        click.echo(f"Error connecting to API. Is the FastAPI server running on {API_URL}?", err=True)
+        click.echo(f"Details: {e}", err=True)
         sys.exit(1)
     except requests.exceptions.RequestException as e:
         click.echo(f"Error connecting to API: {e}", err=True)
